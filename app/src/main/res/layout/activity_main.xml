@@ -4,24 +4,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="16dp"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:paddingTop="100dp"
     android:background="@drawable/work"
     tools:context=".MainActivity">
 
 
-    <Button
-        android:id="@+id/toDoListButton"
-        android:layout_width="180dp"
-        android:layout_height="50dp"
-        android:text="To Do List"
-        android:layout_centerInParent="true"
-        android:background="@android:color/white"
-        android:textColor="@android:color/holo_orange_dark"
-        android:textSize="24sp"
-        android:textStyle="normal"/>
+    <ListView
+        android:id="@+id/listTasks"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="40dp"
+        android:clickable="true"
+        app:srcCompat="@drawable/ic_baseline_add_task_24" />
+
+
 
 
 </RelativeLayout>

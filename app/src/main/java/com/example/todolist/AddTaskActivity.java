@@ -10,7 +10,6 @@ import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
 
 import android.content.ContentResolver;
-import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,32 +17,26 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.example.todolist.data.ToDoListContract;
 
 public class AddTaskActivity extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<Cursor>{
 
 
     private static final int EDIT_MEMBER_LOADER = 111;
-    Uri currentMemberUri;
+    Uri currentTaskUri;
 
     private EditText describeTheTaskEditText;
-    private ListView listTasks;
+
 
 
     @Override
@@ -53,48 +46,29 @@ public class AddTaskActivity extends AppCompatActivity
 
         Intent intent = getIntent();
 
-        currentMemberUri = intent.getData();
+        currentTaskUri = intent.getData();
 
-        if (currentMemberUri == null) {
-            setTitle("Add a Memeber");
+        if (currentTaskUri == null) {
+            setTitle("Add a Task");
             invalidateOptionsMenu();
         } else {
-            setTitle("Edit the Memeber");
+            setTitle("Edit the Task");
             getSupportLoaderManager().initLoader(EDIT_MEMBER_LOADER,
                     null, this);
         }
 
         describeTheTaskEditText = findViewById(R.id.editText);
-        listTasks = findViewById(R.id.listTasks);
 
-        Button addTaskButton = findViewById(R.id.addTaskButton);
-        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>
-                (this, android.R.layout.simple_list_item_1);
-        listTasks.setAdapter(arrayAdapter);
-        addTaskButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String task = describeTheTaskEditText.getText().toString();
-                arrayAdapter.add(task);
-                describeTheTaskEditText.setText("");
-            }
-        });
 
-        Button saveListButton = findViewById(R.id.saveListButton);
-        saveListButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-            }
-        });
     }
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
 
         super.onPrepareOptionsMenu(menu);
 
-        if (currentMemberUri == null) {
-            MenuItem menuItem = menu.findItem(R.id.delete_member);
+        if (currentTaskUri == null) {
+            MenuItem menuItem = menu.findItem(R.id.delete_task);
             menuItem.setVisible(false);
         }
 
@@ -103,17 +77,17 @@ public class AddTaskActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.edit_member_menu,menu);
+        getMenuInflater().inflate(R.menu.edit_task_menu,menu);
         return true;
     }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.save_member:
-                saveMember();
+            case R.id.save_task:
+                saveTask();
                 return  true;
-            case R.id.delete_member:
-                showDeleteMemberDialog();
+            case R.id.delete_task:
+                showDeleteTaskDialog();
                 return true;
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);
@@ -122,7 +96,7 @@ public class AddTaskActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    private void saveMember() {
+    private void saveTask() {
 
         String editText = describeTheTaskEditText.getText().toString().trim();
 
@@ -133,11 +107,12 @@ public class AddTaskActivity extends AppCompatActivity
             return;
 
         }
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(ToDoListContract.TaskEntry.COLUMN_DESCRIBE_THE_TASK, editText);
 
-
-        if (currentMemberUri == null) {
+        if (currentTaskUri == null) {
             ContentResolver contentResolver = getContentResolver();
-            Uri uri = contentResolver.insert(MemberEntry.CONTENT_URI,
+            Uri uri = contentResolver.insert(ToDoListContract.TaskEntry.CONTENT_URI,
                     contentValues);
 
             if (uri == null) {
@@ -150,7 +125,7 @@ public class AddTaskActivity extends AppCompatActivity
 
             }
         } else {
-            int rowsChanged = getContentResolver().update(currentMemberUri,
+            int rowsChanged = getContentResolver().update(currentTaskUri,
                     contentValues, null, null);
 
             if (rowsChanged == 0) {
@@ -159,7 +134,7 @@ public class AddTaskActivity extends AppCompatActivity
                         Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(this,
-                        "Member updated", Toast.LENGTH_LONG).show();
+                        "Task updated", Toast.LENGTH_LONG).show();
             }
         }
 
@@ -171,13 +146,13 @@ public class AddTaskActivity extends AppCompatActivity
     public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
 
         String[] projection = {
-                MemberEntry._ID,
-                MemberEntry.COLUMN_DESCRIBE_THE_TASK,
+                ToDoListContract.TaskEntry._ID,
+                ToDoListContract.TaskEntry.COLUMN_DESCRIBE_THE_TASK,
 
         };
 
         return new CursorLoader(this,
-                currentMemberUri,
+                currentTaskUri,
                 projection,
                 null,
                 null,
@@ -189,16 +164,13 @@ public class AddTaskActivity extends AppCompatActivity
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor cursor) {
         if (cursor.moveToFirst()) {
             int firstNameColumIndex = cursor.getColumnIndex(
-                    MemberEntry.COLUMN_DESCRIBE_THE_TASK
+                    ToDoListContract.TaskEntry.COLUMN_DESCRIBE_THE_TASK
             );
 
 
-            String firstName = cursor.getString(firstNameColumIndex);
-            String lastName = cursor.getString(lastNameColumIndex);
-            int gender = cursor.getInt(genderColumIndex);
-            String sport = cursor.getString(sportColumIndex);
+            String describeTheTask = cursor.getString(firstNameColumIndex);
 
-            describeTheTaskEditText.setText(firstName);
+            describeTheTaskEditText.setText(describeTheTask);
 
 
 
@@ -210,14 +182,14 @@ public class AddTaskActivity extends AppCompatActivity
 
     }
 
-    private void showDeleteMemberDialog() {
+    private void showDeleteTaskDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Do you want delete the member?");
         builder.setPositiveButton("Delete",
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        deleteMember();
+                        deleteTask();
                     }
                 });
         builder.setNegativeButton("Cancel",
@@ -234,18 +206,18 @@ public class AddTaskActivity extends AppCompatActivity
 
     }
 
-    private void deleteMember() {
-        if (currentMemberUri != null) {
-            int rowsDeleted = getContentResolver().delete(currentMemberUri,
+    private void deleteTask() {
+        if (currentTaskUri != null) {
+            int rowsDeleted = getContentResolver().delete(currentTaskUri,
                     null, null);
 
             if (rowsDeleted == 0) {
                 Toast.makeText(this,
-                        "Deleting of data from the table failed",
+                        "Deleting of task from the table failed",
                         Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(this,
-                        "Member is deleted",
+                        "Task is deleted",
                         Toast.LENGTH_LONG).show();
             }
 

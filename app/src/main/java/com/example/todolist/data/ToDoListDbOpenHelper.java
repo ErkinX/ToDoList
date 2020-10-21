@@ -1,4 +1,4 @@
-package com.example.todolist;
+package com.example.todolist.data;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -12,9 +12,9 @@ public class ToDoListDbOpenHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String CREATE_MEMBERS_TABLE = "CREATE TABLE " + MemberEntry.TABLE_NAME + "("
-                + MemberEntry._ID + " INTEGER PRIMARY KEY,"
-                + MemberEntry.COLUMN_DESCRIBE_THE_TASK + " TEXT,"
+        String CREATE_MEMBERS_TABLE = "CREATE TABLE " + ToDoListContract.TaskEntry.TABLE_NAME + "("
+                + ToDoListContract.TaskEntry._ID + " INTEGER PRIMARY KEY,"
+                + ToDoListContract.TaskEntry.COLUMN_DESCRIBE_THE_TASK + " TEXT,"
                 +  " TEXT" + ")";
         db.execSQL(CREATE_MEMBERS_TABLE);
     }
