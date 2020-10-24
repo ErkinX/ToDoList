@@ -16,10 +16,11 @@
         android:weightSum="3">
 
         <TextView
-            android:text="Describe the task"
-            android:layout_weight="1"
             android:layout_width="0dp"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Describe the task"
+            android:textSize="14sp" />
 
         <EditText
             android:id="@+id/editText"
