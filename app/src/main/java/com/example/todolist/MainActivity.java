@@ -58,9 +58,9 @@ public class MainActivity extends AppCompatActivity
 
                 Intent intent = new Intent(MainActivity.this,
                         AddTaskActivity.class);
-                Uri currentMemberUri = ContentUris
+                Uri currentTaskUri = ContentUris
                         .withAppendedId(ToDoListContract.TaskEntry.CONTENT_URI, id);
-                intent.setData(currentMemberUri);
+                intent.setData(currentTaskUri);
                 startActivity(intent);
 
             }
@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity
         String[] projection = {
                 ToDoListContract.TaskEntry._ID,
                 ToDoListContract.TaskEntry.COLUMN_DESCRIBE_THE_TASK,
+                ToDoListContract.TaskEntry.COLUMN_TASK_DATE,
 
         };
 

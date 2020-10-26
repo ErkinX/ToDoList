@@ -9,6 +9,8 @@ import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.DialogInterface;
@@ -22,21 +24,31 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.todolist.data.ToDoListContract;
 
+import java.util.Calendar;
+
 public class AddTaskActivity extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<Cursor>{
 
 
-    private static final int EDIT_MEMBER_LOADER = 111;
+    private static final int EDIT_TASK_LOADER = 111;
     Uri currentTaskUri;
 
     private EditText describeTheTaskEditText;
+    private EditText taskDateEditText;
 
+
+    int DIALOG_DATE = 1;
+    Calendar calendar = Calendar.getInstance();
+    int myyear = calendar.get(Calendar.YEAR);
+    int month = calendar.get(Calendar.MONTH);
+    int day = calendar.get(Calendar.DAY_OF_MONTH);
 
 
     @Override
@@ -53,13 +65,12 @@ public class AddTaskActivity extends AppCompatActivity
             invalidateOptionsMenu();
         } else {
             setTitle("Edit the Task");
-            getSupportLoaderManager().initLoader(EDIT_MEMBER_LOADER,
+            getSupportLoaderManager().initLoader(EDIT_TASK_LOADER,
                     null, this);
         }
 
         describeTheTaskEditText = findViewById(R.id.editText);
-
-
+        taskDateEditText = findViewById(R.id.editDate);
 
     }
     @Override
@@ -102,13 +113,23 @@ public class AddTaskActivity extends AppCompatActivity
 
         if (TextUtils.isEmpty(editText)) {
             Toast.makeText(this,
-                    "Input the describe the text",
+                    "Input the describe the task",
+                    Toast.LENGTH_LONG).show();
+            return;
+
+        }
+        String editDate = taskDateEditText.getText().toString().trim();
+
+        if (TextUtils.isEmpty(editDate)) {
+            Toast.makeText(this,
+                    "Input the task date",
                     Toast.LENGTH_LONG).show();
             return;
 
         }
         ContentValues contentValues = new ContentValues();
         contentValues.put(ToDoListContract.TaskEntry.COLUMN_DESCRIBE_THE_TASK, editText);
+        contentValues.put(ToDoListContract.TaskEntry.COLUMN_TASK_DATE, editDate);
 
         if (currentTaskUri == null) {
             ContentResolver contentResolver = getContentResolver();
@@ -117,11 +138,11 @@ public class AddTaskActivity extends AppCompatActivity
 
             if (uri == null) {
                 Toast.makeText(this,
-                        "Insertion of data in the table failed",
+                        "Insertion of task in the table failed",
                         Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(this,
-                        "Data saved", Toast.LENGTH_LONG).show();
+                        "Task saved", Toast.LENGTH_LONG).show();
 
             }
         } else {
@@ -130,7 +151,7 @@ public class AddTaskActivity extends AppCompatActivity
 
             if (rowsChanged == 0) {
                 Toast.makeText(this,
-                        "Saving of data in the table failed",
+                        "Saving of task in the table failed",
                         Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(this,
@@ -148,6 +169,7 @@ public class AddTaskActivity extends AppCompatActivity
         String[] projection = {
                 ToDoListContract.TaskEntry._ID,
                 ToDoListContract.TaskEntry.COLUMN_DESCRIBE_THE_TASK,
+                ToDoListContract.TaskEntry.COLUMN_TASK_DATE,
 
         };
 
@@ -163,14 +185,20 @@ public class AddTaskActivity extends AppCompatActivity
     @Override
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor cursor) {
         if (cursor.moveToFirst()) {
-            int firstNameColumIndex = cursor.getColumnIndex(
+            int taskColumIndex = cursor.getColumnIndex(
                     ToDoListContract.TaskEntry.COLUMN_DESCRIBE_THE_TASK
             );
 
+            int dateColumIndex = cursor.getColumnIndex(
+                    ToDoListContract.TaskEntry.COLUMN_TASK_DATE
+            );
 
-            String describeTheTask = cursor.getString(firstNameColumIndex);
+
+            String describeTheTask = cursor.getString(taskColumIndex);
+            String taskDate = cursor.getString(dateColumIndex);
 
             describeTheTaskEditText.setText(describeTheTask);
+            taskDateEditText.setText(taskDate);
 
 
 
@@ -184,7 +212,7 @@ public class AddTaskActivity extends AppCompatActivity
 
     private void showDeleteTaskDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Do you want delete the member?");
+        builder.setMessage("Do you want delete the task?");
         builder.setPositiveButton("Delete",
                 new DialogInterface.OnClickListener() {
                     @Override
@@ -224,5 +252,31 @@ public class AddTaskActivity extends AppCompatActivity
             finish();
         }
     }
+
+    public void onclick(View view) {
+        showDialog(DIALOG_DATE);
+    }
+
+
+    protected Dialog onCreateDialog(int id) {
+        if (id == DIALOG_DATE) {
+            DatePickerDialog tpd = new DatePickerDialog(this, myCallBack, myyear, month, day);
+            return tpd;
+        }
+        return super.onCreateDialog(id);
+    }
+
+    DatePickerDialog.OnDateSetListener myCallBack = new DatePickerDialog.OnDateSetListener() {
+
+        public void onDateSet(DatePicker view, int year, int monthOfYear,
+                              int dayOfMonth) {
+            myyear = year - 2000;
+            month = monthOfYear + 1;
+            day = dayOfMonth;
+            taskDateEditText.setText(day + "/" + month + "/" + myyear);
+        }
+    };
+
+
 
 }

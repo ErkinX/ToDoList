@@ -12,11 +12,11 @@ public class ToDoListDbOpenHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String CREATE_MEMBERS_TABLE = "CREATE TABLE " + ToDoListContract.TaskEntry.TABLE_NAME + "("
+        String CREATE_TASKS_TABLE = "CREATE TABLE " + ToDoListContract.TaskEntry.TABLE_NAME + "("
                 + ToDoListContract.TaskEntry._ID + " INTEGER PRIMARY KEY,"
                 + ToDoListContract.TaskEntry.COLUMN_DESCRIBE_THE_TASK + " TEXT,"
-                +  " TEXT" + ")";
-        db.execSQL(CREATE_MEMBERS_TABLE);
+                + ToDoListContract.TaskEntry.COLUMN_TASK_DATE + " TEXT" + ")";
+        db.execSQL(CREATE_TASKS_TABLE);
     }
 
     @Override

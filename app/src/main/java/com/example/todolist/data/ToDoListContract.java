@@ -12,7 +12,7 @@ public class ToDoListContract
     }
 
     public static final int DATABASE_VERSION = 1;
-    public static final String DATABASE_NAME = "todolist";
+    public static final String DATABASE_NAME = "todo_list";
 
     public static final String SCHEME = "content://";
     public static final String AUTORITY = "com.example.todolist";
@@ -27,6 +27,7 @@ public class ToDoListContract
 
         public static final String _ID = BaseColumns._ID;
         public static final String COLUMN_DESCRIBE_THE_TASK = "editText";
+        public static final String COLUMN_TASK_DATE = "editDate";
 
 
 

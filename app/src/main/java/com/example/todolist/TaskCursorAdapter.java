@@ -24,11 +24,14 @@ public class TaskCursorAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
 
         TextView describeTheTaskTextView = view.findViewById(R.id.describeTheTaskTextView);
+        TextView insertTheDateTextView = view.findViewById(R.id.insertTheDateTextView);
 
         String describeTheTask = cursor.getString(cursor.getColumnIndexOrThrow(ToDoListContract.TaskEntry.COLUMN_DESCRIBE_THE_TASK));
+        String insertTheDate = cursor.getString(cursor.getColumnIndexOrThrow(ToDoListContract.TaskEntry.COLUMN_TASK_DATE));
 
 
         describeTheTaskTextView.setText(describeTheTask);
+        insertTheDateTextView.setText(insertTheDate);
 
     }
 }

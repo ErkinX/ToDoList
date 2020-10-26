@@ -72,6 +72,11 @@ public class ToDoListContentProvider extends ContentProvider {
             throw new IllegalArgumentException("You have to input task");
         }
 
+        String taskDate = values.getAsString(TaskEntry.COLUMN_TASK_DATE);
+        if (taskDate == null) {
+            throw new IllegalArgumentException("You have to input task date");
+        }
+
         SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
 
         int match = uriMatcher.match(uri);
@@ -136,6 +141,13 @@ public class ToDoListContentProvider extends ContentProvider {
             String task = values.getAsString(TaskEntry.COLUMN_DESCRIBE_THE_TASK);
             if (task == null) {
                 throw new IllegalArgumentException("You have to input task");
+            }
+        }
+
+        if (values.containsKey(TaskEntry.COLUMN_TASK_DATE)) {
+            String taskDate = values.getAsString(TaskEntry.COLUMN_TASK_DATE);
+            if (taskDate == null) {
+                throw new IllegalArgumentException("You have to input task date");
             }
         }
 
