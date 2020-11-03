@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -9,35 +10,43 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:weightSum="5">
+        android:weightSum="10">
 
         <TextView
             android:id="@+id/describeTheTaskTextView"
-            android:orientation="horizontal"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="3"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="6"
+            android:orientation="horizontal"
+            android:textAlignment="center"
             android:textColor="@android:color/holo_blue_dark"
-            android:textSize="18sp" />
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/insertTheDateTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1.5"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="3"
             android:orientation="horizontal"
-            android:textColor="@android:color/holo_blue_dark"
-            android:textSize="18sp" />
+            android:textAlignment="center"
+            android:textColor="@android:color/holo_green_dark"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:ignore="RtlCompat" />
 
         <CheckBox
             android:id="@+id/taskCheckBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.5"
+            android:layout_weight="1"
             android:orientation="horizontal"
             android:focusable="false"
             android:focusableInTouchMode="false"
-            android:textSize="18sp" />
+            android:textSize="16sp"
+            android:layout_gravity="center_vertical"/>
 
     </LinearLayout>
 
