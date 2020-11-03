@@ -15,7 +15,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.todolist.data.ToDoListContract;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -24,6 +27,7 @@ public class MainActivity extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int TASK_LOADER = 123;
+
     TaskCursorAdapter taskCursorAdapter;
 
     ListView dataListView;
@@ -77,6 +81,7 @@ public class MainActivity extends AppCompatActivity
                 ToDoListContract.TaskEntry._ID,
                 ToDoListContract.TaskEntry.COLUMN_DESCRIBE_THE_TASK,
                 ToDoListContract.TaskEntry.COLUMN_TASK_DATE,
+                ToDoListContract.TaskEntry.COLUMN_TASK_STATUS,
 
         };
 

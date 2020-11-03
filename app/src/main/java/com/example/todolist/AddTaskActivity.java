@@ -132,6 +132,8 @@ public class AddTaskActivity extends AppCompatActivity
         contentValues.put(ToDoListContract.TaskEntry.COLUMN_TASK_DATE, editDate);
 
         if (currentTaskUri == null) {
+
+            contentValues.put(ToDoListContract.TaskEntry.COLUMN_TASK_STATUS, "false");
             ContentResolver contentResolver = getContentResolver();
             Uri uri = contentResolver.insert(ToDoListContract.TaskEntry.CONTENT_URI,
                     contentValues);
@@ -170,6 +172,7 @@ public class AddTaskActivity extends AppCompatActivity
                 ToDoListContract.TaskEntry._ID,
                 ToDoListContract.TaskEntry.COLUMN_DESCRIBE_THE_TASK,
                 ToDoListContract.TaskEntry.COLUMN_TASK_DATE,
+                ToDoListContract.TaskEntry.COLUMN_TASK_STATUS,
 
         };
 
@@ -193,12 +196,18 @@ public class AddTaskActivity extends AppCompatActivity
                     ToDoListContract.TaskEntry.COLUMN_TASK_DATE
             );
 
+//            int statusColumIndex = cursor.getColumnIndex(
+//                    ToDoListContract.TaskEntry.COLUMN_TASK_STATUS
+//            );
+
 
             String describeTheTask = cursor.getString(taskColumIndex);
             String taskDate = cursor.getString(dateColumIndex);
+            //String taskStatus = cursor.getString(statusColumIndex);
 
             describeTheTaskEditText.setText(describeTheTask);
             taskDateEditText.setText(taskDate);
+           // taskDateEditText.setText(taskDate);
 
 
 

@@ -77,6 +77,11 @@ public class ToDoListContentProvider extends ContentProvider {
             throw new IllegalArgumentException("You have to input task date");
         }
 
+//        String taskStatus = values.getAsString(TaskEntry.COLUMN_TASK_STATUS);
+//        if (taskStatus == null) {
+//            throw new IllegalArgumentException("You have to input task date");
+//        }
+
         SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
 
         int match = uriMatcher.match(uri);

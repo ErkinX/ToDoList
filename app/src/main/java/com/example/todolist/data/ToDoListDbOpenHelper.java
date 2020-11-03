@@ -15,7 +15,8 @@ public class ToDoListDbOpenHelper extends SQLiteOpenHelper {
         String CREATE_TASKS_TABLE = "CREATE TABLE " + ToDoListContract.TaskEntry.TABLE_NAME + "("
                 + ToDoListContract.TaskEntry._ID + " INTEGER PRIMARY KEY,"
                 + ToDoListContract.TaskEntry.COLUMN_DESCRIBE_THE_TASK + " TEXT,"
-                + ToDoListContract.TaskEntry.COLUMN_TASK_DATE + " TEXT" + ")";
+                + ToDoListContract.TaskEntry.COLUMN_TASK_DATE + " TEXT,"
+                + ToDoListContract.TaskEntry.COLUMN_TASK_STATUS + " TEXT" + ")";
         db.execSQL(CREATE_TASKS_TABLE);
     }
 
