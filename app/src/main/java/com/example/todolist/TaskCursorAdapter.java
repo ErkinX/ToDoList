@@ -16,6 +16,8 @@ import android.widget.Toast;
 
 import com.example.todolist.data.ToDoListContract;
 
+import java.util.Date;
+
 public class TaskCursorAdapter extends CursorAdapter {
     public TaskCursorAdapter(Context context, Cursor c, boolean autoRequery) {
         super(context, c, autoRequery);
@@ -40,6 +42,7 @@ public class TaskCursorAdapter extends CursorAdapter {
                 (ToDoListContract.TaskEntry.COLUMN_TASK_DATE));
         String insertTheStatus = cursor.getString(cursor.getColumnIndexOrThrow
                 (ToDoListContract.TaskEntry.COLUMN_TASK_STATUS));
+
         Log.d("status", "" +  insertTheStatus);
         if (insertTheStatus.equals("1")) {
             Log.d("IF", insertTheStatus);
@@ -72,21 +75,23 @@ public class TaskCursorAdapter extends CursorAdapter {
                 ContentValues contentValues = new ContentValues();
                 contentValues.put(ToDoListContract.TaskEntry.COLUMN_TASK_STATUS, isChecked);
 
-                int something = ctx.getContentResolver().update(
-                        Uri.withAppendedPath(ToDoListContract.TaskEntry.CONTENT_URI,Integer.toString(id)),
-                        contentValues,
-                        selection,selectionArgs);
                 if(isChecked) {
+                    contentValues.put(ToDoListContract.TaskEntry.COLUMN_TASK_DONE_STATUS, new Date().toString());
                     Toast.makeText(ctx,
                             "CHECKED",
                             Toast.LENGTH_LONG).show();
-                    return;
                 } else {
+                    contentValues.put(ToDoListContract.TaskEntry.COLUMN_TASK_DONE_STATUS, "");
                     Toast.makeText(ctx,
                             "UNCHECKED",
                             Toast.LENGTH_LONG).show();
-                    return;
                 }
+
+                ctx.getContentResolver().update(
+                        Uri.withAppendedPath(ToDoListContract.TaskEntry.CONTENT_URI,Integer.toString(id)),
+                        contentValues,
+                        selection,selectionArgs);
+                return;
 //                ContentValues contentValues = new ContentValues();
 //                contentValues.put(ToDoListContract.TaskEntry.COLUMN_TASK_STATUS, isChecked);
 //                context.getContentResolver().update(currentTaskUri,

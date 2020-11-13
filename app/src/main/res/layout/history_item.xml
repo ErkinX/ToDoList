@@ -15,40 +15,28 @@
         android:weightSum="10">
 
         <TextView
-            android:id="@+id/describeTheTaskTextView"
+            android:id="@+id/historyTaskTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="6"
             android:orientation="horizontal"
-
             android:textColor="@android:color/holo_blue_dark"
             android:textSize="16sp"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/insertTheDateTextView"
+            android:id="@+id/doneDateTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_weight="3"
+            android:layout_weight="4"
             android:orientation="horizontal"
             android:textAlignment="center"
             android:textColor="@android:color/holo_green_dark"
             android:textSize="16sp"
             android:textStyle="bold"
             tools:ignore="RtlCompat" />
-
-        <CheckBox
-            android:id="@+id/taskCheckBox"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:textSize="16sp"
-            android:layout_gravity="center_vertical"/>
 
     </LinearLayout>
 

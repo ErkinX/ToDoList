@@ -3,20 +3,27 @@ package com.example.todolist;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
 
+import android.content.ContentResolver;
 import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -31,6 +38,90 @@ public class MainActivity extends AppCompatActivity
     TaskCursorAdapter taskCursorAdapter;
 
     ListView dataListView;
+
+    private EditText describeTheTaskEditText;
+    private EditText taskDateEditText;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.edit_history_menu,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.history_item:
+                history();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void history() {
+        Intent intent = new Intent(MainActivity.this,
+                HistoryActivity.class);
+        startActivity(intent);
+    }
+
+    private void showDeleteHistoryDialog() {
+    }
+
+    private void historyDoneTasks() {
+
+        String editText = describeTheTaskEditText.getText().toString().trim();
+
+        if (TextUtils.isEmpty(editText)) {
+            Toast.makeText(this,
+                    "Input the describe the task",
+                    Toast.LENGTH_LONG).show();
+            return;
+
+        }
+        String editDate = taskDateEditText.getText().toString().trim();
+
+        if (TextUtils.isEmpty(editDate)) {
+            Toast.makeText(this,
+                    "Input the task date",
+                    Toast.LENGTH_LONG).show();
+            return;
+
+        }
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(ToDoListContract.TaskEntry.COLUMN_DESCRIBE_THE_TASK, editText);
+        contentValues.put(ToDoListContract.TaskEntry.COLUMN_TASK_DATE, editDate);
+
+//        if (currentTaskUri == null) {
+
+            contentValues.put(ToDoListContract.TaskEntry.COLUMN_TASK_STATUS, "false");
+            ContentResolver contentResolver = getContentResolver();
+            Uri uri = contentResolver.insert(ToDoListContract.TaskEntry.CONTENT_URI,
+                    contentValues);
+
+            if (uri == null) {
+                Toast.makeText(this,
+                        "Insertion of task in the table failed",
+                        Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this,
+                        "Task saved", Toast.LENGTH_LONG).show();
+
+            }
+//        } else {
+//            int rowsChanged = getContentResolver().update(currentTaskUri,
+//                    contentValues, null, null);
+
+//            if (rowsChanged == 0) {
+                Toast.makeText(this,
+                        "Saving of task in the table failed",
+                        Toast.LENGTH_LONG).show();
+//            } else {
+                Toast.makeText(this,
+                        "Task updated", Toast.LENGTH_LONG).show();
+            }
+//        }
+
+
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,8 +179,8 @@ public class MainActivity extends AppCompatActivity
         CursorLoader cursorLoader = new CursorLoader(this,
                 ToDoListContract.TaskEntry.CONTENT_URI,
                 projection,
-                null,
-                null,
+                "editStatus=?",
+                new String[]{"false"},
                 null
         );
         return cursorLoader;

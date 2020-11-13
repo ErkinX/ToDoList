@@ -5,27 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/notes"
-    tools:context="MainActivity">
-
+    tools:context="HistoryActivity">
 
     <ListView
-        android:id="@+id/listTasks"
+        android:id="@+id/listHistory"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="30dp"
         android:layout_marginBottom="35dp"
         android:layout_marginLeft="40dp"
         android:layout_marginRight="35dp" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="35dp"
-        android:layout_marginBottom="35dp"
-        android:clickable="true"
-        app:srcCompat="@drawable/ic_baseline_add_task_24" />
 
 </RelativeLayout>

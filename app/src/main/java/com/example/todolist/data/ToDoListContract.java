@@ -11,7 +11,7 @@ public class ToDoListContract
 
     }
 
-    public static final int DATABASE_VERSION = 4;
+    public static final int DATABASE_VERSION = 5;
     public static final String DATABASE_NAME = "todo_list";
 
     public static final String SCHEME = "content://";
@@ -23,12 +23,14 @@ public class ToDoListContract
 
     public  static final class TaskEntry implements BaseColumns {
 
-        public static final String TABLE_NAME = "task_list";
+        public static final String TABLE_NAME = "task_list_1";
 
         public static final String _ID = BaseColumns._ID;
         public static final String COLUMN_DESCRIBE_THE_TASK = "editText";
         public static final String COLUMN_TASK_DATE = "editDate";
         public static final String COLUMN_TASK_STATUS = "editStatus";
+        public static final String COLUMN_TASK_DONE_STATUS = "editDoneStatus";
+
 
 
 
