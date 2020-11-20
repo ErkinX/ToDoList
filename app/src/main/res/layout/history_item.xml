@@ -9,34 +9,34 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="40dp"
-        android:layout_marginRight="35dp"
         android:orientation="horizontal"
-        android:weightSum="10">
+        android:weightSum="3">
 
         <TextView
             android:id="@+id/historyTaskTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_weight="6"
+            android:layout_weight="2"
             android:orientation="horizontal"
+            android:textAlignment="gravity"
             android:textColor="@android:color/holo_blue_dark"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:paddingStart="15dp"/>
 
         <TextView
             android:id="@+id/doneDateTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_weight="4"
+            android:layout_weight="1"
             android:orientation="horizontal"
-            android:textAlignment="center"
+            android:textAlignment="gravity"
             android:textColor="@android:color/holo_green_dark"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:textStyle="bold"
-            tools:ignore="RtlCompat" />
+            android:paddingStart="10dp"/>
 
     </LinearLayout>
 

@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
+import androidx.core.view.GestureDetectorCompat;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
@@ -16,8 +17,10 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -25,6 +28,8 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.todolist.data.ToDoListContract;
@@ -42,9 +47,11 @@ public class MainActivity extends AppCompatActivity
     private EditText describeTheTaskEditText;
     private EditText taskDateEditText;
 
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.edit_history_menu,menu);
+        getMenuInflater().inflate(R.menu.edit_history_menu, menu);
         return true;
     }
 
@@ -92,32 +99,32 @@ public class MainActivity extends AppCompatActivity
 
 //        if (currentTaskUri == null) {
 
-            contentValues.put(ToDoListContract.TaskEntry.COLUMN_TASK_STATUS, "false");
-            ContentResolver contentResolver = getContentResolver();
-            Uri uri = contentResolver.insert(ToDoListContract.TaskEntry.CONTENT_URI,
-                    contentValues);
+        contentValues.put(ToDoListContract.TaskEntry.COLUMN_TASK_STATUS, "false");
+        ContentResolver contentResolver = getContentResolver();
+        Uri uri = contentResolver.insert(ToDoListContract.TaskEntry.CONTENT_URI,
+                contentValues);
 
-            if (uri == null) {
-                Toast.makeText(this,
-                        "Insertion of task in the table failed",
-                        Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(this,
-                        "Task saved", Toast.LENGTH_LONG).show();
+        if (uri == null) {
+            Toast.makeText(this,
+                    "Insertion of task in the table failed",
+                    Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this,
+                    "Task saved", Toast.LENGTH_LONG).show();
 
-            }
+        }
 //        } else {
 //            int rowsChanged = getContentResolver().update(currentTaskUri,
 //                    contentValues, null, null);
 
 //            if (rowsChanged == 0) {
-                Toast.makeText(this,
-                        "Saving of task in the table failed",
-                        Toast.LENGTH_LONG).show();
+        Toast.makeText(this,
+                "Saving of task in the table failed",
+                Toast.LENGTH_LONG).show();
 //            } else {
-                Toast.makeText(this,
-                        "Task updated", Toast.LENGTH_LONG).show();
-            }
+        Toast.makeText(this,
+                "Task updated", Toast.LENGTH_LONG).show();
+    }
 //        }
 
 
@@ -163,7 +170,10 @@ public class MainActivity extends AppCompatActivity
 
         getSupportLoaderManager().initLoader(TASK_LOADER,
                 null, this);
-    }
+
+
+}
+
 
     @NonNull
     @Override
