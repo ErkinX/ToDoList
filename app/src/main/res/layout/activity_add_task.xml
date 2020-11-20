@@ -2,9 +2,10 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:padding="8dp"
+    android:padding="40dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/notes"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".AddTaskActivity">
@@ -22,7 +23,8 @@
             android:layout_weight="1"
             android:layout_gravity="center_vertical"
             android:text="Describe the task"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:paddingStart="15dp"/>
 
         <EditText
             android:id="@+id/editText"
@@ -45,7 +47,8 @@
             android:layout_weight="1"
             android:layout_gravity="center_vertical"
             android:text="Insert the Date"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:paddingStart="15dp"/>
 
         <EditText
             android:id="@+id/editDate"
