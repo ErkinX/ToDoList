@@ -47,6 +47,7 @@
             android:textAlignment="gravity"
             android:focusable="false"
             android:focusableInTouchMode="false"
+            android:textColor="@android:color/holo_red_dark"
             android:textSize="14dp"
             android:layout_gravity="center_vertical"
             android:paddingStart="10dp"/>

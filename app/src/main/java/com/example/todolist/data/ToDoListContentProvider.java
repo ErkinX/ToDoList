@@ -8,7 +8,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.util.Log;
+
+import com.example.todolist.RecyclerHistoryEntity;
 import com.example.todolist.data.ToDoListContract.TaskEntry;
+
+import java.util.ArrayList;
 
 public class ToDoListContentProvider extends ContentProvider {
 
@@ -208,5 +212,28 @@ public class ToDoListContentProvider extends ContentProvider {
 
         }
     }
+
+
+
+
+
+//    void addContacts(Contacts contacts) {
+//        ContentValues values = new ContentValues();
+//        values.put(COLUMN_NAME, contacts.getName());
+//        values.put(COLUMN_NO, contacts.getPhno());
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        db.insert(TABLE_CONTACTS, null, values);
+//    }
+//    void updateContacts(Contacts contacts) {
+//        ContentValues values = new ContentValues();
+//        values.put(COLUMN_NAME, contacts.getName());
+//        values.put(COLUMN_NO, contacts.getPhno());
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        db.update(TABLE_CONTACTS, values, COLUMN_ID + " = ?", new String[]{String.valueOf(contacts.getId())});
+//    }
+//    void deleteContact(int id) {
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        db.delete(TABLE_CONTACTS, COLUMN_ID + " = ?", new String[]{String.valueOf(id)});
+//    }
 
 }

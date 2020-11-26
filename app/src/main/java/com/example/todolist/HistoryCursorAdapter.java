@@ -44,12 +44,12 @@ public class HistoryCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, final Cursor cursor) {
 
-        TextView historyTaskTextView = view.findViewById(R.id.historyTaskTextView);
-        String historyTask = cursor.getString(cursor.getColumnIndexOrThrow(ToDoListContract.TaskEntry.COLUMN_TASK_DONE_STATUS));
-        historyTaskTextView.setText(historyTask);
+        TextView taskTextView = view.findViewById(R.id.historyTaskTextView);
+        String task = cursor.getString(cursor.getColumnIndexOrThrow(ToDoListContract.TaskEntry.COLUMN_DESCRIBE_THE_TASK));
+        taskTextView.setText(task);
 
         TextView doneDateTextView = view.findViewById(R.id.doneDateTextView);
-        String doneDate = cursor.getString(cursor.getColumnIndexOrThrow(ToDoListContract.TaskEntry.COLUMN_TASK_DATE));
+        String doneDate = cursor.getString(cursor.getColumnIndexOrThrow(ToDoListContract.TaskEntry.COLUMN_TASK_DONE_STATUS));
         try {
             doneDateTextView.setText(changeFormat(doneDate));
         } catch (ParseException e) {
@@ -59,118 +59,62 @@ public class HistoryCursorAdapter extends CursorAdapter {
         final Context ctx = context;
         final int id = cursor.getInt(cursor.getColumnIndex(ToDoListContract.TaskEntry._ID));
 
-        CheckBox historyCheckBox = (CheckBox) view.findViewById(R.id.historyCheckBox);
 
-
-
-//        historyTaskTextView.setText(historyTask);
-//        doneDateTextView.setText(doneDate);
-//        final Context ctx = context;
-//        final int id = cursor.getInt(cursor.getColumnIndex(ToDoListContract.TaskEntry._ID));
-
-        historyCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        view.setOnTouchListener(new OnSwipeTouchListener(ctx) {
+            public void onClick() {
+                Toast.makeText(ctx, "clicked", Toast.LENGTH_SHORT).show();
+            }
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Log.d("isChecked", "" + isChecked);
-                String selection = ToDoListContract.TaskEntry._ID + "=?";
-                String itemIDArgs = Integer.toString(id);
-                //This is a toast to check if the correct item is being clicked
-                Log.d("ID", "" + itemIDArgs);
-                //Works till here
+            public void onSwipeLeft() {
+                Toast.makeText(ctx, "left", Toast.LENGTH_SHORT).show();
+                showDeleteItemDialog();
+            }
 
-                //Selection args claus
-                String[] selectionArgs = {itemIDArgs};
-                //Update the value
 
-                ContentValues contentValues = new ContentValues();
-                contentValues.put(ToDoListContract.TaskEntry.COLUMN_TASK_STATUS, isChecked);
+            private void showDeleteItemDialog() {
+                AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
+                builder.setMessage("Do you want delete the task?");
+                builder.setPositiveButton("Delete",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                deleteItem();
+                            }
+                        });
+                builder.setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (dialog != null) {
+                                    dialog.dismiss();
+                                }
+                            }
+                        });
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
 
-                if(isChecked) {
-                    contentValues.put(ToDoListContract.TaskEntry.COLUMN_TASK_DONE_STATUS, new Date().toString());
+            }
+
+            private void deleteItem() {
+                int rowsDeleted =
+                        ctx.getContentResolver().delete(
+                                Uri.withAppendedPath(ToDoListContract.TaskEntry.CONTENT_URI, Integer.toString(id)),
+                                null, null);
+
+                if (rowsDeleted == 0) {
                     Toast.makeText(ctx,
-                            "CHECKED",
+                            "Deleting of list from the table failed",
                             Toast.LENGTH_LONG).show();
                 } else {
-                    contentValues.put(ToDoListContract.TaskEntry.COLUMN_TASK_DONE_STATUS, "");
                     Toast.makeText(ctx,
-                            "UNCHECKED",
+                            "Task is deleted",
                             Toast.LENGTH_LONG).show();
                 }
 
-                ctx.getContentResolver().update(
-                        Uri.withAppendedPath(ToDoListContract.TaskEntry.CONTENT_URI,Integer.toString(id)),
-                        contentValues,
-                        selection,selectionArgs);
-                return;
-//                ContentValues contentValues = new ContentValues();
-//                contentValues.put(ToDoListContract.TaskEntry.COLUMN_TASK_STATUS, isChecked);
-//                context.getContentResolver().update(currentTaskUri,
-//                        contentValues, null, null);
             }
         });
 
     }
-
-
-
-
-
-
-//        view.setOnTouchListener(new OnSwipeTouchListener(ctx) {
-//            public void onClick() {
-//                Toast.makeText(ctx, "clicked", Toast.LENGTH_SHORT).show();
-//            }
-//            @Override
-//            public void onSwipeLeft() {
-//                Toast.makeText(ctx, "left", Toast.LENGTH_SHORT).show();
-//                showDeleteItemDialog();
-//            }
-//
-//
-//            private void showDeleteItemDialog() {
-//                AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
-//                builder.setMessage("Do you want delete the task?");
-//                builder.setPositiveButton("Delete",
-//                        new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                deleteItem();
-//                            }
-//                        });
-//                builder.setNegativeButton("Cancel",
-//                        new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                if (dialog != null) {
-//                                    dialog.dismiss();
-//                                }
-//                            }
-//                        });
-//                AlertDialog alertDialog = builder.create();
-//                alertDialog.show();
-//
-//            }
-//
-//            private void deleteItem() {
-//                int rowsDeleted =
-//                        ctx.getContentResolver().delete(
-//                                Uri.withAppendedPath(ToDoListContract.TaskEntry.CONTENT_URI, Integer.toString(id)),
-//                                null, null);
-//
-//                if (rowsDeleted == 0) {
-//                    Toast.makeText(ctx,
-//                            "Deleting of list from the table failed",
-//                            Toast.LENGTH_LONG).show();
-//                } else {
-//                    Toast.makeText(ctx,
-//                            "Task is deleted",
-//                            Toast.LENGTH_LONG).show();
-//                }
-//
-//            }
-//        });
-
-
 
     public String changeFormat(String date) throws ParseException {
         if (date.equals("")) {
@@ -184,5 +128,3 @@ public class HistoryCursorAdapter extends CursorAdapter {
 
     }
 }
-
-
